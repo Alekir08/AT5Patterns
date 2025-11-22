@@ -8,6 +8,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.netology.data.DataGenerator;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -15,6 +19,11 @@ import java.util.Locale;
 import static com.codeborne.selenide.Selenide.*;
 
 public class OrderingCardDeliveryTest {
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
 
     @BeforeEach
     void setup() {
@@ -50,5 +59,10 @@ public class OrderingCardDeliveryTest {
         $("[data-test-id='success-notification']")
                 .should(Condition.text("Успешно!"))
                 .should(Condition.text("Встреча успешно запланирована на " + dataSecond));
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 }
